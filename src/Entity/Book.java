@@ -3,6 +3,8 @@ package Entity;
 import java.util.Scanner;
 
 public class Book {
+
+
     private String bookId;
     private String bookName;
     private  float importPrice;
