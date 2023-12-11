@@ -1,5 +1,5 @@
 package HomeWork.Problem2;
-
+//Test
 public class StaticMethod {
     private static final double PI=3.14F;
     public static double calCircleArea(double radius){
