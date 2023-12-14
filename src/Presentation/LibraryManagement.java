@@ -1,27 +1,26 @@
 package Presentation;
 
 import BusinessImp.CommonFunction;
+import Entity.Book;
 import Entity.Category;
-import Entity.Product;
 
 import java.util.Scanner;
 
-public class StorageManagement {
+public class LibraryManagement {
     public static void main(String[] args) {
-
         Scanner scanner=new Scanner(System.in);
         do {
             Category.listCategory=CategoryManagement.readDataFromFileForCategory();
-            Product.listProduct=ProductManagement.readDataFromFileForProduct();
-            System.out.println("===== Store Management =====");
-            System.out.println("1. Categories Management\n2. Product Management\n3. Exit");
+            Book.listBook=BookManagement.readDataFromFileForBook();
+            System.out.println("===== Library Management =====");
+            System.out.println("1. Categories Management\n2. Book Management\n3. Exit");
             int choice= CommonFunction.CheckInteger("choice",scanner);
             switch (choice){
                 case 1:
                     CategoryManagement.displayMenu(scanner);
                     break;
                 case 2:
-                    ProductManagement.displayMenu(scanner);
+                    BookManagement.displayMenu(scanner);
                     break;
                 case 3:
                     System.exit(0);

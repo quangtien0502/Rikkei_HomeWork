@@ -9,22 +9,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class CategoryManagement{
-    public static void displayMenu(Scanner scanner){
+public class CategoryManagement {
+    public static void displayMenu(Scanner scanner) {
         boolean isExit=false;
         do {
+
             Category.listCategory = readDataFromFileForCategory();
             System.out.println("""
                             ===== CATEGORY MANAGEMENT =====
                             1. Add new categories.
-                            2. Update Category
-                            3. Delete Category.
-                            4. Find Category by Category Name.
-                            5. The products number of all category.
+                            2. Display Categories from A-Z
+                            3. Show the numbers of each book in each category.
+                            4. Update Category.
+                            5. Delete Category.
                             6. Back.
                             8.Display Category.\s
                             """
-                    );
+            );
+
             int choice= CommonFunction.CheckInteger("choice",scanner);
             switch (choice){
                 case 1:
@@ -37,19 +39,17 @@ public class CategoryManagement{
                     writeDataToFile(Category.listCategory);
                     break;
                 case 2:
+                    CategoryMenuLogic.displayCategoryByName();
+                    break;
+                case 3:
+                    CategoryMenuLogic.showNumberOfBooksEachCategory();
+                    break;
+                case 4:
                     CategoryMenuLogic.updateCategory(scanner);
                     writeDataToFile(Category.listCategory);
                     break;
-                case 3:
-                    CategoryMenuLogic.deleteCategory(scanner);
-                    writeDataToFile(Category.listCategory);
-                    break;
-                case 4:
-                    CategoryMenuLogic.findCategoryByName(scanner);
-                    writeDataToFile(Category.listCategory);
-                    break;
                 case 5:
-                    CategoryMenuLogic.listProductNumberOfAllCategories();
+                    CategoryMenuLogic.deleteCategory(scanner);
                     writeDataToFile(Category.listCategory);
                     break;
                 case 6:
@@ -64,7 +64,7 @@ public class CategoryManagement{
         }while (!isExit);
     }
 
-    public static List<Category> readDataFromFileForCategory(){
+    public static List<Category> readDataFromFileForCategory() {
         List<Category> listCategory = null;
         File file = new File("categories.txt");
         FileInputStream fis = null;
@@ -80,17 +80,17 @@ public class CategoryManagement{
             return new ArrayList<>();
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
-        }finally {
-            if (fis!=null){
+        } finally {
+            if (fis != null) {
                 try {
                     fis.close();
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
             }
-            if (ois!=null){
+            if (ois != null) {
                 try {
                     ois.close();
                 } catch (IOException e) {
@@ -101,7 +101,7 @@ public class CategoryManagement{
         return new ArrayList<>();
     }
 
-    public static void writeDataToFile(List<Category> listCategory){
+    public static void writeDataToFile(List<Category> listCategory) {
         File file = new File("categories.txt");
 
         FileOutputStream fos = null;
@@ -115,17 +115,17 @@ public class CategoryManagement{
             throw new RuntimeException(e);
         } catch (IOException e) {
             System.err.println("File is null");
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
-        }finally {
-            if (fos!=null){
+        } finally {
+            if (fos != null) {
                 try {
                     fos.close();
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
             }
-            if (oos!=null){
+            if (oos != null) {
                 try {
                     oos.close();
                 } catch (IOException e) {

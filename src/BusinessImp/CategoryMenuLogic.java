@@ -1,12 +1,21 @@
 package BusinessImp;
 
+import Entity.Book;
 import Entity.Category;
-import Entity.Product;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class CategoryMenuLogic {
+
+    public static void displayCategoryByName() {
+        List<Category> listCategoryResult;
+        listCategoryResult = Category.listCategory.stream().sorted(Comparator.comparing(Category::getName)).collect(Collectors.toList());
+        CommonFunction.displayCategory(listCategoryResult);
+    }
+
     public static void updateCategory(Scanner scanner) {
         int index;
         CommonFunction.displayCategory(Category.listCategory);
@@ -18,9 +27,8 @@ public class CategoryMenuLogic {
                 System.out.println("""
                         =====UPDATE CATEGORY MENU =====
                         1. Update Category Name.
-                        2. Update Category Description
-                        3. Update Category Status\s
-                        4. Back.
+                        2. Update Category Status\s
+                        3. Back.
                         """
                 );
                 int choice = CommonFunction.CheckInteger("choice", scanner);
@@ -29,12 +37,9 @@ public class CategoryMenuLogic {
                         Category.listCategory.get(index).setName(Category.inputName(scanner));
                         break;
                     case 2:
-                        Category.listCategory.get(index).setDescription(Category.inputDescription(scanner));
-                        break;
-                    case 3:
                         Category.listCategory.get(index).setStatus(!Category.listCategory.get(index).isStatus());
                         break;
-                    case 4:
+                    case 3:
                         isExit = true;
                         break;
                     default:
@@ -54,9 +59,9 @@ public class CategoryMenuLogic {
         index = CommonFunction.findIndexByIdCategory(id);
         boolean isExist = true;
         if (index != -1) {
-            for (Product product :
-                    Product.listProduct) {
-                if (product.getCategoryId() == id) {
+            for (Book book :
+                    Book.listBook) {
+                if (book.getCategoryId() == id) {
                     isExist = true;
                     break;
                 }
@@ -66,25 +71,12 @@ public class CategoryMenuLogic {
                 Category.listCategory.remove(index);
                 System.out.println("Delete Success");
             } else {
-                System.err.println("The Category already include product, can't delete");
+                System.err.println("The Category already include Book, can't delete");
             }
         } else {
             System.err.println("Id like that doesn't exist");
         }
 
-    }
-
-    public static void findCategoryByName(Scanner scanner) {
-        List<Category> listCategoryResult = new ArrayList<>();
-        System.out.println("Please enter The Category Name that you want to find");
-        String name = scanner.nextLine();
-        for (Category category :
-                Category.listCategory) {
-            if (category.getName().equals(name)) {
-                listCategoryResult.add(category);
-            }
-        }
-        CommonFunction.displayCategory(listCategoryResult);
     }
 
     public static String findCategoryNameById(int id) {
@@ -96,14 +88,19 @@ public class CategoryMenuLogic {
         return value;
     }
 
-    public static void listProductNumberOfAllCategories() {
-        Map<String, List<Product>> productsByCategory = Product.listProduct.stream().collect(Collectors.groupingBy(productGroup -> CategoryMenuLogic.findCategoryNameById(productGroup.getCategoryId())));
-        productsByCategory.forEach((category, products) -> {
-            System.out.println("Category: " + category);
-            products.forEach(product -> {
-                System.out.println("Product: " + product.getName());
-            });
-            System.out.println("---------------------------------------------");
-        });
+    public static void showNumberOfBooksEachCategory() {
+        for (Category category :
+                Category.listCategory) {
+            int bookCount = 0;
+            for (Book book :
+                    Book.listBook) {
+                if (book.getCategoryId() == category.getId()) {
+                    bookCount++;
+                }
+            }
+            System.out.printf("| %-15s | %-5d |%n",category.getName(),bookCount);
+            System.out.println("୨୧┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈୨୧");
+
+        }
     }
 }

@@ -1,87 +1,78 @@
 package Presentation;
 
+import BusinessImp.BookMenuLogic;
 import BusinessImp.CommonFunction;
-import BusinessImp.ProductMenuLogic;
+import Entity.Book;
 import Entity.Category;
-import Entity.Product;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class ProductManagement {
-
+public class BookManagement {
     public static void displayMenu(Scanner scanner){
         boolean isExit=false;
         do {
-            Product.listProduct=readDataFromFileForProduct();
+            Book.listBook=readDataFromFileForBook();
             System.out.println("""
-                    ===== PRODUCTS MANAGEMENT =====
-                    1. Add new Products.
-                    2. Update Products
-                    3. Delete Product.
-                    4. Display Product By Name from A-Z.
-                    5. Display products by descending profit.
-                    6. Search for product.
-                    7. Back.\s
+                    ===== Books MANAGEMENT =====
+                    1. Add new Books.
+                    2. Update Books
+                    3. Delete Books.
+                    4. Find Books
+                    5. Display Books by Category
+                    6. Back.\s
                     """
             );
             int choice= CommonFunction.CheckInteger("choice",scanner);
             switch (choice){
                 case 1:
-
                     if(Category.listCategory.size()!=0){
-                        int number=CommonFunction.CheckInteger("The amount of products that you want to enter",scanner);
+                        int number=CommonFunction.CheckInteger("The amount of books that you want to enter",scanner);
                         for (int i = 0; i < number; i++) {
-                            Product product = new Product();
-                            product.inputData(scanner);
-                            Product.listProduct.add(product);
+                            Book book = new Book();
+                            book.inputData(scanner);
+                            Book.listBook.add(book);
                         }
                     }else {
                         System.err.println("You must enter a category first");
                     }
-                    writeDataToFile(Product.listProduct);
+                    writeDataToFile(Book.listBook);
                     break;
                 case 2:
-                    ProductMenuLogic.updateProduct(scanner);
-                    writeDataToFile(Product.listProduct);
+                    BookMenuLogic.updateBook(scanner);
+                    writeDataToFile(Book.listBook);
                     break;
                 case 3:
-                    ProductMenuLogic.deleteProduct(scanner);
-                    writeDataToFile(Product.listProduct);
+                    BookMenuLogic.deleteBook(scanner);
+                    writeDataToFile(Book.listBook);
                     break;
                 case 4:
-                    ProductMenuLogic.displayProductByName();
-                    writeDataToFile(Product.listProduct);
+                    BookMenuLogic.findBookByKeyWord(scanner);
+                    writeDataToFile(Book.listBook);
                     break;
                 case 5:
-                    ProductMenuLogic.displayProductByDescendingProfit();
-                    writeDataToFile(Product.listProduct);
+                    BookMenuLogic.listBooksNumberOfAllCategories();
                     break;
                 case 6:
-                    ProductMenuLogic.findProductByKeyWord(scanner);
-                    writeDataToFile(Product.listProduct);
-                    break;
-                case 7:
                     isExit=true;
                     break;
-                default:
-                    System.err.println("Please enter value from 1 to 7");
+
             }
         }while (!isExit);
     }
 
-    public static List<Product> readDataFromFileForProduct(){
-        List<Product> listProduct = null;
-        File file = new File("products.txt");
+    public static List<Book> readDataFromFileForBook(){
+        List<Book> listBook = null;
+        File file = new File("books.txt");
         FileInputStream fis = null;
         ObjectInputStream ois = null;
         try {
             fis = new FileInputStream(file);
             ois = new ObjectInputStream(fis);
-            listProduct = (List<Product>) ois.readObject();
-            return listProduct;
+            listBook = (List<Book>) ois.readObject();
+            return listBook;
         } catch (FileNotFoundException e) {
             return new ArrayList<>();
         } catch (IOException e) {
@@ -109,15 +100,15 @@ public class ProductManagement {
         return new ArrayList<>();
     }
 
-    public static void writeDataToFile(List<Product> listProduct){
-        File file = new File("products.txt");
+    public static void writeDataToFile(List<Book> ListBook){
+        File file = new File("books.txt");
 
         FileOutputStream fos = null;
         ObjectOutputStream oos = null;
         try {
             fos = new FileOutputStream(file);
             oos = new ObjectOutputStream(fos);
-            oos.writeObject(listProduct);
+            oos.writeObject(ListBook);
             oos.flush();
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);

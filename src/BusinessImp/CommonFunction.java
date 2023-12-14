@@ -1,7 +1,7 @@
 package BusinessImp;
 
+import Entity.Book;
 import Entity.Category;
-import Entity.Product;
 
 import java.util.List;
 import java.util.Scanner;
@@ -22,7 +22,7 @@ public class CommonFunction {
     public static int findIndexByIdCategory(int id){
         int index=-1;
         for (Category category:Category.listCategory
-             ) {
+        ) {
             if(category.getId()==id){
                 index= Category.listCategory.indexOf(category);
             }
@@ -30,12 +30,12 @@ public class CommonFunction {
         return index;
     }
 
-    public static int findIndexByIdProduct(String id){
+    public static int findIndexByIdBook(String id){
         int index=-1;
-        for (Product product:Product.listProduct
+        for (Book book:Book.listBook
         ) {
-            if(product.getId().equals(id)){
-                index= Product.listProduct.indexOf(product);
+            if(book.getId().equals(id)){
+                index= Book.listBook.indexOf(book);
             }
         }
         return index;
@@ -46,8 +46,8 @@ public class CommonFunction {
         category.displayData(categories);
     }
 
-    public static void displayProduct(List<Product> products){
-        Product product=new Product();
-        product.displayData(products);
+    public static void displayBook(List<Book> books){
+        Book book=new Book();
+        book.displayData(books);
     }
 }
